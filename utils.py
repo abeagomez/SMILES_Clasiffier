@@ -55,7 +55,7 @@ def get_targets():
             targets.append(row_targets)
     n_targets = []
     for target in targets:
-        n_targets.append([int(i) if i != "" else None for i in target])
+        n_targets.append([float(i) if i != "" else None for i in target])
     return n_targets
 
 def missing_values_per_columns():
@@ -88,7 +88,7 @@ def get_filled_targets():
     for target in targets:
         for i in range(len(target)):
             if target[i] is None:
-                target[i] = 0
+                target[i] = 0.0
     return targets
 
 

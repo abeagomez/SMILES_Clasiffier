@@ -27,7 +27,18 @@ def build_lstm_model(max_len, x_train):
     return model
 
 
-def plot_history(histories, key='categorical_crossentropy'):
+def dense_model(max_len):
+    model = Sequential()
+    model.add(Dense(512, input_shape=(max_len,), activation = "relu"))
+    model.add(Dense(1024, activation="relu"))
+    model.add(Dense(512, activation="relu"))
+    model.add(Dense(12, activation='softmax'))
+    model.compile(loss='binary_crossentropy',
+                  optimizer='adam', metrics=['accuracy', 'binary_crossentropy'])
+    return model
+
+
+def plot_history(histories, key='binary_crossentropy'):
     plt.figure(figsize=(16, 10))
     for name, history in histories:
         val = plt.plot(history.epoch, history.history['val_'+key],
@@ -40,6 +51,8 @@ def plot_history(histories, key='categorical_crossentropy'):
     plt.legend()
 
     plt.xlim([0, max(history.epoch)])
+
+
 
 def build_model():
     vectors = utils.get_smiles_as_vectors()
@@ -55,13 +68,13 @@ def build_model():
     y_train, y_test = np.array(x_labels[0:spl]), np.array(x_labels[spl:])
 
     #model
-    model = build_lstm_model(max_len, x_train)
-
+    #model = build_lstm_model(max_len, x_train)
+    model = dense_model(max_len)
     print(model.summary())
     history = model.fit(x_train,
                         y_train,
                         validation_data=(x_test, y_test),
-                        epochs=10,
+                        epochs=20,
                         batch_size=64,
                         verbose=1,)
 
