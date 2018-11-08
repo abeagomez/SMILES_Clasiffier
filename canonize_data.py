@@ -83,3 +83,4 @@ def save_augmented_data():
 
 #save_smiles()
 #save_augmented_data()
+save_targets()

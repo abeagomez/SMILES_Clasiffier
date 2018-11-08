@@ -42,8 +42,8 @@ def plot_history(histories, key='categorical_crossentropy'):
     plt.xlim([0, max(history.epoch)])
 
 def build_model():
-    vectors = utils.get_vectors_from_smiles()
-    targets = utils.get_augmented_targets()
+    vectors = utils.get_smiles_as_vectors()
+    targets = utils.get_filled_targets()
 
     x_train, x_labels = vectors, targets
 
