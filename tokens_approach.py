@@ -21,13 +21,13 @@ def build_lstm_model(max_len, x_train):
     model.add(MaxPooling1D(pool_size=2))
     #model.add(LSTM(100))
     model.add(LSTM(100, dropout=0.5, recurrent_dropout=0.5))
-    model.add(Dense(12, activation='sigmoid'))
-    model.compile(loss='binary_crossentropy',
-                  optimizer='adam', metrics=['accuracy', 'binary_crossentropy'])
+    model.add(Dense(12, activation='softmax'))
+    model.compile(loss='categorical_crossentropy',
+                  optimizer='adam', metrics=['accuracy', 'categorical_crossentropy'])
     return model
 
 
-def plot_history(histories, key='binary_crossentropy'):
+def plot_history(histories, key='categorical_crossentropy'):
     plt.figure(figsize=(16, 10))
     for name, history in histories:
         val = plt.plot(history.epoch, history.history['val_'+key],
