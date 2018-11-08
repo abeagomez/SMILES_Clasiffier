@@ -62,7 +62,7 @@ def build_model():
                         y_train,
                         validation_data=(x_test, y_test),
                         epochs=10,
-                        batch_size=256,
+                        batch_size=64,
                         verbose=1,)
 
     scores = model.evaluate(x_test, y_test, verbose=0)
