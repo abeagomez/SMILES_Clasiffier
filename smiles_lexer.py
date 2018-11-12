@@ -101,7 +101,10 @@ def t_error(t):
 lexer = lex.lex()
 
 def tokenize_smiles(smiles):
-    """"":returns iterable of strings that form the smiles. each string is a token in the smiles grammar"""
+    """""
+    :returns iterable of strings that form the smiles.
+    Each string is a token in the smiles grammar.
+    """
     lexer.input(smiles)
     while True:
         token = lexer.token()

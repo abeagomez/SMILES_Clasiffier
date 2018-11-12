@@ -8,3 +8,5 @@
 - Remove the comments at the end of canonize_data.py or add that to another script
 - Para los missing values usar la moda
 - Hacer un clasificador para recuperar missing data de cada columna
+- Mencionar que hay SMILES que tienen valores distintos de target para el mismo SMILES
+- Mencionar que se pueden limpiar los patrones mas y menos comunes

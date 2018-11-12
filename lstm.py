@@ -4,12 +4,14 @@ import matplotlib.pyplot as plt
 import keras
 from keras.models import Sequential
 from keras.layers import Dense
-from keras.layers import LSTM
+from keras.layers import LSTM, Lambda
 from keras.layers.embeddings import Embedding
 from keras.layers.convolutional import Conv1D
 from keras.layers.convolutional import MaxPooling1D
 from keras.preprocessing import sequence
 from keras.utils import to_categorical
+import tensorflow as tf
+import keras.backend as K
 # fix random seed for reproducibility
 
 max_features = 4
@@ -18,9 +20,9 @@ y2 = np.zeros((y.shape[0],max_features), dtype=np.float32)
 y2[np.arange(y.shape[0]), y] = 1.0
 #print(y2)
 
-vectors = utils.get_smiles_as_vectors()
-max_len = len(max(vectors, key=len))
-x_train = sequence.pad_sequences(vectors, maxlen=max_len)
+x_train = utils.get_smiles_as_vectors()
+max_len = len(max(x_train, key=len))
+x_train = sequence.pad_sequences(x_train, maxlen=max_len)
 x = [[[float(i)] for i in x] for x in x_train]
 x = np.array(x)
 x = x.reshape(x.shape[0], max_len, 1)
@@ -29,8 +31,17 @@ y = np.array(targets)
 
 print("Build model")
 model = Sequential()
-model.add(LSTM(128, dropout=0.2, recurrent_dropout=0.2, input_dim=1))
+model.add(LSTM(64, dropout=0.2, recurrent_dropout=0.2, input_dim=1))
 model.add(Dense(12, activation="sigmoid"))
+# model.add(Dense(12,
+#                 activation=Lambda(lambda z: tf.divide(
+#                     tf.add(
+#                         K.sign(
+#                             tf.subtract(keras.layers.activations.sigmoid(x=z), 0.5)),
+#                         K.abs(
+#                             K.sign(
+#                                 tf.subtract(keras.layers.activations.sigmoid(x=z), 0.5)))),
+#                     2)), kernel_initializer="lecun_normal"))
 
 model.compile(loss="binary_crossentropy",
             optimizer="adam",

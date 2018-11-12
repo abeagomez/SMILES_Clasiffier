@@ -45,42 +45,4 @@ def save_smiles():
         for i in smiles:
             f.write(i + '\n')
 
-def fill_targets(targets_list):
-    l = len(targets_list)
-    targets_list = [targets_list]
-    index = 0
-    filled_targets = []
-    while index < l:
-        for i in targets_list:
-            if i[index] == "":
-                t_1 = [i[j] if j != index else "0" for j in range(len(i))]
-                filled_targets.append(t_1)
-                t_2 = [i[j] if j != index else "1" for j in range(len(i))]
-                filled_targets.append(t_2)
-        if filled_targets:
-            targets_list = [i for i in filled_targets]
-            filled_targets = []
-        index += 1
-    return [list(map(int, l)) for l in targets_list]
-
-def get_all_smiles_targets_possibilities():
-    smiles, targets = get_smiles_and_targets()
-    n_smiles = []
-    n_targets = []
-    for i in range(len(smiles)):
-        t = fill_targets(targets[i])
-        for j in t:
-            n_smiles.append(smiles[i])
-            n_targets.append(j)
-    return n_smiles, n_targets
-
-def save_augmented_data():
-    s, t = get_all_smiles_targets_possibilities()
-    np.savetxt("augmented_targets.npy", t)
-    with open("augmented_smiles.txt", 'w') as f:
-        for i in s:
-            f.write(i + '\n')
-
-#save_smiles()
-#save_augmented_data()
-save_targets()
+save_smiles()

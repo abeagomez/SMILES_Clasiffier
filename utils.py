@@ -1,5 +1,6 @@
 import numpy as np
 import csv
+import random as rd
 from smiles_lexer import tokenize_smiles
 
 def get_tokens_dict():
@@ -80,10 +81,12 @@ def targets_mode():
                     ones_counter[i] += 1
                 else:
                     zeros_counter[i] += 1
-    print(ones_counter)
-    print(zeros_counter)
+    return ones_counter, zeros_counter
 
 def get_filled_targets():
+    """
+    This function fills all the missing values in the targets with 0s
+    """
     targets = get_targets()
     for target in targets:
         for i in range(len(target)):
@@ -91,4 +94,46 @@ def get_filled_targets():
                 target[i] = 0.0
     return targets
 
+def get_positive_samples(target_index, smiles, targets):
+    positive_values = []
+    for i in range(len(targets)):
+        if targets[i][target_index]:
+            positive_values.append(smiles[i])
+    return positive_values
 
+def over_sampling_data_set(target_index, positive_samples, smiles, target):
+    positives, negatives = targets_mode()
+    ratio = negatives[target_index] - positives[target_index]
+    while ratio > 0:
+        vector = rd.choice(positive_samples)
+        index = rd.randint(0, len(target)-1)
+        smiles.insert(index, vector)
+        target.insert(index, 1.0)
+        ratio -= 1
+    return smiles, target
+
+
+def get_target_values(categories):
+    values = []
+    for pair in categories:
+        if pair[0] > 0.5:
+            values.append(0.0)
+        else:
+            values.append(1.0)
+    return values
+
+def evaluation_variables(predicted, expected):
+    """
+    :returns a tuple: true_positives, true_negatives, false_positives, false_negatives
+    """
+    t_p, t_n, f_p, f_n = 0, 0, 0, 0
+    for i in range(len(predicted)):
+        if predicted[i] == 1 and expected[i] == 1:
+            t_p += 1
+        elif predicted[i] == 1 and expected[i] != 1:
+            f_p += 1
+        elif predicted[i] == 0 and expected[i] == 0:
+            t_n += 1
+        else:
+            f_n += 1
+    return t_p, t_n, f_p, f_n
