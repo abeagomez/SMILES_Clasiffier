@@ -140,8 +140,5 @@ def evaluation_variables(predicted, expected):
     print("True Negatives: %i" % t_n)
     print("False Positives: %i" % f_p)
     print("False Negatives: %i" % f_n)
-    print("")
-    print("Accuracy: %f" % ((t_p + t_n)/(t_p + t_n + f_p + f_n)))
-    print("Precision: %f" % (t_p/(t_p + f_p)))
-    print("Recall: %f" % (t_p/(t_p + f_n)))
+    return t_p, t_n, f_p, f_n
 
