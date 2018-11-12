@@ -33,15 +33,6 @@ print("Build model")
 model = Sequential()
 model.add(LSTM(64, dropout=0.2, recurrent_dropout=0.2, input_dim=1))
 model.add(Dense(12, activation="sigmoid"))
-# model.add(Dense(12,
-#                 activation=Lambda(lambda z: tf.divide(
-#                     tf.add(
-#                         K.sign(
-#                             tf.subtract(keras.layers.activations.sigmoid(x=z), 0.5)),
-#                         K.abs(
-#                             K.sign(
-#                                 tf.subtract(keras.layers.activations.sigmoid(x=z), 0.5)))),
-#                     2)), kernel_initializer="lecun_normal"))
 
 model.compile(loss="binary_crossentropy",
             optimizer="adam",

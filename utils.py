@@ -7,7 +7,7 @@ def get_tokens_dict():
     st_dict = {}
     with open("canonized_smiles.txt", 'r') as f:
         smiles = [line.rstrip('\n') for line in f]
-    index = 1
+    index = 2
     for smile in smiles:
         tokenized_smile = list(tokenize_smiles(smile))
         for token in tokenized_smile:
@@ -112,7 +112,6 @@ def over_sampling_data_set(target_index, positive_samples, smiles, target):
         ratio -= 1
     return smiles, target
 
-
 def get_target_values(categories):
     values = []
     for pair in categories:
@@ -136,4 +135,13 @@ def evaluation_variables(predicted, expected):
             t_n += 1
         else:
             f_n += 1
-    return t_p, t_n, f_p, f_n
+    print("")
+    print("True Positives: %i" % t_p)
+    print("True Negatives: %i" % t_n)
+    print("False Positives: %i" % f_p)
+    print("False Negatives: %i" % f_n)
+    print("")
+    print("Accuracy: %f" % ((t_p + t_n)/(t_p + t_n + f_p + f_n)))
+    print("Precision: %f" % (t_p/(t_p + f_p)))
+    print("Recall: %f" % (t_p/(t_p + f_n)))
+
